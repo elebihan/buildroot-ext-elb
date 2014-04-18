@@ -1,0 +1,14 @@
+[Unit]
+Description=dhcpcd on %I
+Wants=network.target
+Before=network.target
+BindTo=sys-subsystem-net-devices-%i.device
+
+[Service]
+Type=forking
+PIDFile=/var/run/dhcpcd-%I.pid
+ExecStart=/usr/sbin/dhcpcd -A -q -w %I
+ExecStop=/usr/sbin/dhcpcd -k %I
+
+[Install]
+Alias=multi-user.target.wants/dhcpcd@eth0.service

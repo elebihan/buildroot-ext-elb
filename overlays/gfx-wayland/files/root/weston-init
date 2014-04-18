@@ -1,0 +1,21 @@
+#!/bin/sh
+
+TTY=2
+WESTON_LOG_FILE=/tmp/weston.log
+WAYLAND_RUNTIME_DIR=/tmp/wayland
+#export WAYLAND_DEBUG=1
+mkdir -p $WAYLAND_RUNTIME_DIR
+chmod 0700 $WAYLAND_RUNTIME_DIR
+export XDG_RUNTIME_DIR=$WAYLAND_RUNTIME_DIR
+
+MACHINE=`awk '/Hardware/ { print $3 }' /proc/cpuinfo`
+if [ "$MACHINE" = "BCM2708" ]; then
+	WESTON_BACKEND=rpi-backend.so
+else
+	WESTON_BACKEND=fbdev-backend.so
+fi
+
+openvt -c $TTY -s -- weston \
+	--backend=/usr/lib/weston/$WESTON_BACKEND \
+	--tty=$TTY \
+	--log=$WESTON_LOG_FILE

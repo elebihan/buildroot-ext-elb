@@ -1,0 +1,153 @@
+define grsec_denied {
+	/boot		h
+	/dev/grsec	h
+	/dev/kmem	h
+	/dev/mem	h
+	/dev/port	h
+	/etc/grsec	h
+	/proc/kcore	h
+	/proc/slabinfo	h
+	/proc/modules	h
+	/proc/kallsyms	h
+	/lib/modules	hs
+	/etc/ssh	h
+}
+
+role admin sA
+subject / rvka
+	/ rwcdmlxi
+
+role default G
+role_transitions admin
+subject /		dpo
+	/		r
+	/opt		rx
+	/home		rwxcd
+	/mnt		rw
+	/dev
+	/dev/urandom	r
+	/dev/random	r
+	/dev/zero	rw
+	/dev/input	rw
+	/dev/psaux	rw
+	/dev/null	rw
+	/dev/tty?	rw
+	/dev/console	rw
+	/dev/tty	rw
+	/dev/pts	rw
+	/dev/ptmx	rw
+	/dev/dsp	rw
+	/dev/mixer	rw
+	/dev/initctl	rw
+	/dev/fd0	r
+	/bin		rx
+	/sbin		rx
+	/lib		rx
+	/usr		rx
+	/etc		rx
+	/proc		rwx
+	/proc/sys	r
+	/sys		h
+	/root		r
+	/run		r
+	/tmp		rwcd
+	/var		rwxcd
+	/var/tmp	rwcd
+	/var/log	r
+	$grsec_denied
+
+	/usr/sbin/sshd
+
+	-CAP_KILL
+	-CAP_SYS_TTY_CONFIG
+	-CAP_LINUX_IMMUTABLE
+	-CAP_NET_RAW
+	-CAP_MKNOD
+	-CAP_SYS_ADMIN
+	-CAP_SYS_RAWIO
+	-CAP_SYS_MODULE
+	-CAP_SYS_PTRACE
+	-CAP_NET_ADMIN
+	-CAP_NET_BIND_SERVICE
+	-CAP_NET_RAW
+	-CAP_SYS_CHROOT
+	-CAP_SYS_BOOT
+	-CAP_SETFCAP
+	-CAP_SYSLOG
+
+subject /usr/sbin/sshd dpo
+	/
+	/*		h
+	/bin/bash	x
+	/dev		h
+	/dev/log	rw
+	/dev/random	r
+	/dev/urandom	r
+	/dev/null	rw
+	/dev/ptmx	rw
+	/dev/pts	rw
+	/dev/tty	rw
+	/dev/tty?	rw
+	/etc		r
+	/etc/grsec	h
+	/home
+	/home/*/.ssh/authorized_keys r
+	/lib		rx
+	/root
+	/proc		r
+	/proc/*/oom_adj rw
+	/proc/kcore	h
+	/proc/sys	h
+	/proc/sys/kernel/ngroups_max r
+	/selinux	r
+	/usr/lib	rx
+	/usr/share/zoneinfo r
+	/var/log
+	/var/mail
+	/var/log/lastlog	rw
+	/var/log/wtmp		w
+	/var/run
+	/run
+	/var/run/sshd
+	/var/run/utmp		rw
+	/var/run/utmpx		rw
+
+	-CAP_ALL
+	+CAP_CHOWN
+	+CAP_SETGID
+	+CAP_SETUID
+	+CAP_SYS_CHROOT
+	+CAP_SYS_RESOURCE
+	+CAP_SYS_TTY_CONFIG
+
+subject /usr/bin/ssh
+	/etc/ssh/ssh_config r
+
+subject /bin/busybox
+	+CAP_SYS_ADMIN
+	+CAP_NET_ADMIN
+	+CAP_NET_BIND_SERVICE
+	+CAP_SYS_BOOT
+	+CAP_SYS_PTRACE
+	+CAP_SYSLOG
+	/root/.ash_history rw
+	/etc/random-seed   rw
+	/sys		   r
+	/dev/log rwc
+	/var/log r
+	/tmp 		  rwcd
+	/var/log/messages rwc
+	/var/log/wtmp w
+	/var/log/faillog rwcd
+
+subject /lib o
+	/ h
+	-CAP_ALL
+	connect disabled
+	bind disabled
+
+subject /lib/ld-linux.so.2 o
+	/ h
+	-CAP_ALL
+	connect disabled
+	bind disabled

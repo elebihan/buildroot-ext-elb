@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# Starts ModemManager
+#
+
+prefix=/usr
+exec_prefix=/usr
+sbindir=${exec_prefix}/sbin
+
+MODEMMANAGER_BIN=${sbindir}/ModemManager
+MODEMMANAGER_PIDFILE=/var/run/ModemManager.pid
+MODEMMANAGER_STATEDIR=/var/run/ModemManager
+
+[ -x $MODEMMANAGER_BIN ] || exit 0
+
+start() {
+	echo -n "Starting ModemManager ... "
+	if [ ! -d $MODEMMANAGER_STATEDIR ]; then
+		mkdir -p $MODEMMANAGER_STATEDIR
+	fi
+
+	start-stop-daemon -S -b -q -p $MODEMMANAGER_PIDFILE \
+		--exec $MODEMMANAGER_BIN
+	[ $? == 0 ] && echo "done." || echo "failed!"
+}
+
+stop() {
+	echo -n "Stopping ModemManager ... "
+	start-stop-daemon -K -q -p $MODEMMANAGER_PIDFILE
+	[ $? == 0 ] && echo "done." || echo "failed!"
+}
+
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  restart|reload)
+  	restart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

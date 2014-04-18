@@ -1,0 +1,10 @@
+[Unit]
+Description=Haveged Entropy Gathering Daemon
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/haveged -w 1024 -v 1 -F
+CapabilityBoundingSet=CAP_SYS_ADMIN
+
+[Install]
+WantedBy=multi-user.target

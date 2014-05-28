@@ -15,6 +15,10 @@ else
 	WESTON_BACKEND=fbdev-backend.so
 fi
 
+if [ -f /sys/class/drm/version ]; then
+	WESTON_BACKEND=drm-backend.so
+fi
+
 openvt -c $TTY -s -- weston \
 	--backend=/usr/lib/weston/$WESTON_BACKEND \
 	--tty=$TTY \

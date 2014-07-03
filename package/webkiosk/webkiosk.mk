@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WEBKIOSK_VERSION = 8059591ef26ca90731701b0a815521f80de880c0
+WEBKIOSK_VERSION = bb063504c8c17ec06403b721e99e21bdae034a18
 WEBKIOSK_SITE = git://github.com/elebihan/webkiosk.git
 WEBKIOSK_DEPENDENCIES = qt5quick1 qt5webkit qt5declarative qt5quickcontrols
 

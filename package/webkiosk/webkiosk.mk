@@ -6,7 +6,7 @@
 
 WEBKIOSK_VERSION = bb063504c8c17ec06403b721e99e21bdae034a18
 WEBKIOSK_SITE = git://github.com/elebihan/webkiosk.git
-WEBKIOSK_DEPENDENCIES = qt5quick1 qt5webkit qt5declarative qt5quickcontrols
+WEBKIOSK_DEPENDENCIES = qt5webkit qt5declarative qt5quickcontrols
 
 WEBKIOSK_LICENSE = GPLv3+
 WEBKIOSK_LICENSE_FILES = COPYING

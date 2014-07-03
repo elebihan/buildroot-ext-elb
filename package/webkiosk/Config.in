@@ -1,0 +1,9 @@
+config BR2_PACKAGE_WEBKIOSK
+	bool "webkiosk"
+	select BR2_PACKAGE_QT5QUICK1
+	select BR2_PACKAGE_QT5WEBKIT
+	select BR2_PACKAGE_QT5DECLARATIVE
+	help
+	  Display some web pages using QtWebkit
+
+	  https://github.com/elebihan/webkiosk

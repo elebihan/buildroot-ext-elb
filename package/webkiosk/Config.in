@@ -1,9 +1,19 @@
 config BR2_PACKAGE_WEBKIOSK
 	bool "webkiosk"
+	depends on BR2_PACKAGE_HAS_LIBEGL
+	depends on BR2_PACKAGE_HAS_LIBGLES
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
 	select BR2_PACKAGE_QT5QUICK1
 	select BR2_PACKAGE_QT5WEBKIT
 	select BR2_PACKAGE_QT5DECLARATIVE
+	select BR2_PACKAGE_QT5QUICKCONTROLS
+	select BR2_PACKAGE_QT5BASE_SQL
+	select BR2_PACKAGE_QT5BASE_PRINTSUPPORT
 	help
 	  Display some web pages using QtWebkit
 
 	  https://github.com/elebihan/webkiosk
+
+comment "webkiosk requires an OpenGL-capable backend"
+	depends on (!BR2_PACKAGE_HAS_LIBEGL || !BR2_PACKAGE_HAS_LIBGLES) && \
+		BR2_PACKAGE_QT5_JSCORE_AVAILABLE
